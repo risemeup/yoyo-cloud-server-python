@@ -1,7 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
-logger = logging.getLogger('django')
+logger = logging.getLogger('log')
 
 class EchoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -11,8 +11,9 @@ class EchoConsumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data):
-        logger.info('receive: ',str(text_data))
+        print(type(text_data), text_data)
+        logger.info('receive: {}'.format(str(text_data).decode('utf-8')))
         await self.send(text_data=json.dumps({
             'message': text_data
         }))
-        logger.info('send: ', str(text_data))
+        logger.info('send: {}'.format(str(text_data).decode('utf-8')))
