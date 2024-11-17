@@ -11,8 +11,8 @@ class EchoConsumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data):
-        logger.info('receive: ',text_data)
+        logger.info('receive: ',str(text_data))
         await self.send(text_data=json.dumps({
             'message': text_data
         }))
-        logger.info('send: ',text_data)
+        logger.info('send: ', str(text_data))
