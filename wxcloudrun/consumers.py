@@ -12,8 +12,9 @@ class EchoConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         print(type(text_data), text_data)
-        # logger.info('receive: {}'.format(str(text_data).decode('utf-8')))
-        await self.send(text_data=json.dumps({
+        logger.info('receive: {}'.format(text_data))
+        message = {
             'message': text_data
-        }))
-        # logger.info('send: {}'.format(str(text_data).decode('utf-8')))
+        }
+        await self.send(text_data=json.dumps(message))
+        logger.info('send: {}'.format(message))
