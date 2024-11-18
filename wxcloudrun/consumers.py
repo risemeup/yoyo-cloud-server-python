@@ -6,12 +6,12 @@ logger = logging.getLogger('log')
 class EchoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
+        logger.info('connect success!')
 
     async def disconnect(self, close_code):
-        pass
+        logger.info('disconnect!')
 
     async def receive(self, text_data):
-        print(type(text_data), text_data)
         logger.info('receive: {}'.format(text_data))
         message = {
             'message': text_data
