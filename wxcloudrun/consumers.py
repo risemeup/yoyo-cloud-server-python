@@ -79,7 +79,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         if message.multiSelect:
             message_dict['multiSelect'] = message.multiSelect
         
-        await self.send(text_data=json.dumps(message))
+        await self.send(text_data=json.dumps(message_dict))
         logger.info('send: {}'.format(message_dict))
     
     def receive_message(self, raw_data: str) -> Message:
