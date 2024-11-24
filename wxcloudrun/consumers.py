@@ -68,13 +68,15 @@ class EchoConsumer(AsyncWebsocketConsumer):
         :return: 转换后的字符串
         """
         try:
-            message_dict = {
-                'role': "server",
-                'type': "text",
-                'id': "1111",
-                'timestamp': "2024-11-24 11:00:00",
-                'text': "hello",
+            message = {
+            "type": "text",
+            "id": create_uuid(),
+            "timestamp": get_cur_time_str(),
+            "content": {
+                "text": '123'
+                }
             }
+            await self.send(text_data=json.dumps(message))
             # message_dict = {
             #     'role': message.role,
             #     'type': message.type,
@@ -87,8 +89,8 @@ class EchoConsumer(AsyncWebsocketConsumer):
             # if message.multiSelect:
             #     message_dict['multiSelect'] = message.multiSelect
             
-            await self.send(text_data=json.dumps(message_dict))
-            logger.info('send: {}'.format(message_dict))
+            # await self.send(text_data=json.dumps(message_dict))
+            logger.info('send: {}'.format(message))
         except Exception as e:
             logger.error(f"发生异常: {e}")
     
