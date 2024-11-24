@@ -67,27 +67,30 @@ class EchoConsumer(AsyncWebsocketConsumer):
         :param message: 要发送的Message对象
         :return: 转换后的字符串
         """
-        message_dict = {
-            'role': "server",
-            'type': "text",
-            'id': "1111",
-            'timestamp': "2024-11-24 11:00:00",
-            'text': "hell0"
-        }
-        # message_dict = {
-        #     'role': message.role,
-        #     'type': message.type,
-        #     'id': message.id,
-        #     'timestamp': message.timestamp,
-        #     'text': message.text
-        # }
-        # if message.options:
-        #     message_dict['options'] = [{'id': opt.id, 'label': opt.label} for opt in message.options]
-        # if message.multiSelect:
-        #     message_dict['multiSelect'] = message.multiSelect
-        
-        await self.send(text_data=json.dumps(message_dict))
-        logger.info('send: {}'.format(message_dict))
+        try:
+            message_dict = {
+                'role': "server",
+                'type': "text",
+                'id': "1111",
+                'timestamp': "2024-11-24 11:00:00",
+                'text': "hello",
+            }
+            # message_dict = {
+            #     'role': message.role,
+            #     'type': message.type,
+            #     'id': message.id,
+            #     'timestamp': message.timestamp,
+            #     'text': message.text
+            # }
+            # if message.options:
+            #     message_dict['options'] = [{'id': opt.id, 'label': opt.label} for opt in message.options]
+            # if message.multiSelect:
+            #     message_dict['multiSelect'] = message.multiSelect
+            
+            await self.send(text_data=json.dumps(message_dict))
+            logger.info('send: {}'.format(message_dict))
+        except Exception as e:
+            logger.error(f"发生异常: {e}")
     
     def receive_message(self, raw_data: str) -> Message:
         """
