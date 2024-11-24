@@ -3,12 +3,7 @@
     {
       "name": "yoyo-cloud-server-python",
       "domain": "",
-<<<<<<< HEAD
-      "ip": "",
-      "containerId": "be6c1dd82a4122304c77bf1d38fbeeed8bb242fb3061bd807754456bbb6f4011"
-=======
       "ip": ""
->>>>>>> 5552596ece3d227fc7b5036fb4536d02474a8f2d
     }
   ],
   "config": {
@@ -31,13 +26,8 @@
         }
       ],
       "envParams": {
-<<<<<<< HEAD
-        "MYSQL_USERNAME": "yoyo_wr",
-        "MYSQL_PASSWORD": "yoyo_wr2024",
-=======
         "MYSQL_USERNAME": "root",
         "MYSQL_PASSWORD": "Yoyo2024",
->>>>>>> 5552596ece3d227fc7b5036fb4536d02474a8f2d
         "MYSQL_ADDRESS": "sh-cynosdbmysql-grp-nsutbal4.sql.tencentcdb.com:24139"
       },
       "customLogs": "stdout",
