@@ -3,7 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 import uuid
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Union
 from enum import Enum
 logger = logging.getLogger('log')
 
@@ -35,7 +35,7 @@ class Option:
         self.label = label
 
 class Message:
-    def __init__(self, role: str, type: str, id: str, timestamp: str, content: TextContent | OptionContent):
+    def __init__(self, role: str, type: str, id: str, timestamp: str, content: Union[TextContent, OptionContent]):
         self.role = role
         self.type = type
         self.id = id
