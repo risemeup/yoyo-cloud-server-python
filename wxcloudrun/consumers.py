@@ -68,13 +68,16 @@ class EchoConsumer(AsyncWebsocketConsumer):
         :return: 转换后的字符串
         """
         try:
+            # message1 = {
+            # "type": "text",
+            # "id": create_uuid(),
+            # "timestamp": get_cur_time_str(),
+            # "content": {
+            #     "text": '123'
+            #     }
+            # }
             message1 = {
-            "type": "text",
-            "id": create_uuid(),
-            "timestamp": get_cur_time_str(),
-            "content": {
-                "text": '123'
-                }
+                'message': 'hello'
             }
             await self.send(text_data=json.dumps(message1))
             # message_dict = {
