@@ -127,7 +127,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         id = received_data.get('id')
         timestamp = received_data.get('timestamp')
         content_data = received_data.get('content')
-        logger.info('ccc')
+        logger.info('ccc', msg_type, MessType.TEXT)
 
         if msg_type == MessType.TEXT:
             logger.info('ddd')
