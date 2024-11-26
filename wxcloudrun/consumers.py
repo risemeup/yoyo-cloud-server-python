@@ -69,11 +69,18 @@ class EchoConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         logger.info('receive: {}'.format(text_data))
         logger.info('000')
-        mess = self.json_to_message(text_data)
+        try:
+            mess = self.json_to_message(text_data)
+        except ValueError as e:
+            logger.error(f"无法将接收到的数据转换为JSON格式: {e}")
+            return
         logger.info('111')
         mess.role = Role.SERVER
         logger.info('222')
-        self.send_message(mess)
+        try:
+            self.send_message(mess)
+        except Exception as e:
+            logger.error(f"发生异常: {e}")
         logger.info('333')
         
     
@@ -90,7 +97,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             logger.error(f"发生异常: {e}")
     
-    def json_to_message(self, received_data_str: str) -> Message:
+    def json_to_message(self, received_data_str: str) -> Message|None:
         """
         Parses a JSON-encoded string into a Message object.
 
@@ -108,8 +115,10 @@ class EchoConsumer(AsyncWebsocketConsumer):
                             invalid content data.
         """
         try:
+            logger.info('aaa')
             received_data = json.loads(received_data_str)
         except json.JSONDecodeError as e:
+            logger.info('bbb')
             raise ValueError(f"无法将接收到的数据转换为JSON格式: {e}")
 
         role = received_data.get('role')
@@ -117,8 +126,10 @@ class EchoConsumer(AsyncWebsocketConsumer):
         id = received_data.get('id')
         timestamp = received_data.get('timestamp')
         content_data = received_data.get('content')
+        logger.info('ccc')
 
         if msg_type == MessType.TEXT:
+            logger.info('ddd')
             content = TextContent(content_data['text'])
         elif msg_type == MessType.OPTIONS:
             options = [Option(opt['id'], opt['label']) for opt in content_data['options']]
@@ -127,6 +138,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         else:
             raise ValueError("无效的接收数据内容")
 
+        logger.info('eee')
         return Message(role, msg_type, id, timestamp, content)
 
     def message_to_json(self, message: Message) -> str:
