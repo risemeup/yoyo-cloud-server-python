@@ -53,8 +53,8 @@ class EchoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         mess = Message(
-            role=Role.SERVER,
-            type=MessType.TEXT,
+            role=Role.SERVER.value,
+            type=MessType.TEXT.value,
             id=create_uuid(),
             timestamp=get_cur_time_str(),
             content=TextContent("你好哇！我是你的旅行助手yoyo！请告诉我你想去哪旅行？"),
@@ -75,7 +75,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
             logger.error(f"无法将接收到的数据转换为JSON格式: {e}")
             return
         logger.info('111')
-        mess.role = Role.SERVER
+        mess.role = Role.SERVER.value
         logger.info('222')
         try:
             self.send_message(mess)
@@ -127,12 +127,12 @@ class EchoConsumer(AsyncWebsocketConsumer):
         id = received_data.get('id')
         timestamp = received_data.get('timestamp')
         content_data = received_data.get('content')
-        logger.info('ccc, {}, {}'.format(msg_type, MessType.TEXT))
+        logger.info('ccc, {}, {}'.format(msg_type, MessType.TEXT.value))
 
-        if msg_type == MessType.TEXT:
+        if msg_type == MessType.TEXT.value:
             logger.info('ddd')
             content = TextContent(content_data['text'])
-        elif msg_type == MessType.OPTIONS:
+        elif msg_type == MessType.OPTIONS.value:
             options = [Option(opt['id'], opt['label']) for opt in content_data['options']]
             multiSelect = content_data['multiSelect']
             content = OptionContent(options, multiSelect)
