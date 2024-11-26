@@ -116,6 +116,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         """
         try:
             logger.info('aaa')
+            logger.info('received_data_str: {}'.format(received_data_str))
             received_data = json.loads(received_data_str)
         except json.JSONDecodeError as e:
             logger.info('bbb')
