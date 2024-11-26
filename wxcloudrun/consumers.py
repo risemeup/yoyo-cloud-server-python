@@ -92,6 +92,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         """
         try:
             message_str = self.message_to_json(message)
+            logger.info('befor send: {}'.format(message_str))
             await self.send(text_data=message_str)
             logger.info('send: {}'.format(message_str))
         except Exception as e:
@@ -115,11 +116,9 @@ class EchoConsumer(AsyncWebsocketConsumer):
                             invalid content data.
         """
         try:
-            logger.info('aaa')
             logger.info('received_data_str: {}'.format(received_data_str))
             received_data = json.loads(received_data_str)
         except json.JSONDecodeError as e:
-            logger.info('bbb')
             raise ValueError(f"无法将接收到的数据转换为JSON格式: {e}")
 
         role = received_data.get('role')
@@ -127,10 +126,8 @@ class EchoConsumer(AsyncWebsocketConsumer):
         id = received_data.get('id')
         timestamp = received_data.get('timestamp')
         content_data = received_data.get('content')
-        logger.info('ccc, {}, {}'.format(msg_type, MessType.TEXT.value))
 
         if msg_type == MessType.TEXT.value:
-            logger.info('ddd')
             content = TextContent(content_data['text'])
         elif msg_type == MessType.OPTIONS.value:
             options = [Option(opt['id'], opt['label']) for opt in content_data['options']]
@@ -139,7 +136,6 @@ class EchoConsumer(AsyncWebsocketConsumer):
         else:
             raise ValueError("无效的接收数据内容")
 
-        logger.info('eee')
         return Message(role, msg_type, id, timestamp, content)
 
     def message_to_json(self, message: Message) -> str:
@@ -162,7 +158,8 @@ class EchoConsumer(AsyncWebsocketConsumer):
             'id': message.id,
             'timestamp': message.timestamp,
         }
-
+        logger.info('aaa message_dict: {}'.format(message_dict))
+        
         content_dict = {}
         if isinstance(message.content, TextContent):
             content_dict['text'] = message.content.text
@@ -176,6 +173,8 @@ class EchoConsumer(AsyncWebsocketConsumer):
             content_dict['options'] = options_list
             content_dict['multiSelect'] = message.content.multiSelect
 
+        logger.info('bbb message_dict: {}'.format(message_dict))
         message_dict['content'] = content_dict
+        logger.info('ccc message_dict: {}'.format(message_dict))
 
         return json.dumps(message_dict)
