@@ -25,7 +25,8 @@ class Option:
         self.label = label
 
 class OptionContent:
-    def __init__(self, options: List[Option], multiSelect: bool):
+    def __init__(self, text, options: List[Option], multiSelect: bool):
+        self.text = text
         self.options = options
         self.multiSelect = multiSelect
 
@@ -67,9 +68,13 @@ class EchoConsumer(AsyncWebsocketConsumer):
     # 直接返回接收到消息
     async def receive(self, text_data):
         logger.info('receive: {}'.format(text_data))
+        logger.info('000')
         mess = self.json_to_message(text_data)
+        logger.info('111')
         mess.role = Role.SERVER
+        logger.info('222')
         self.send_message(mess)
+        logger.info('333')
         
     
     async def send_message(self, message: Message):
