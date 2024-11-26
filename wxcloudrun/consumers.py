@@ -97,7 +97,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             logger.error(f"发生异常: {e}")
     
-    def json_to_message(self, received_data_str: str) -> Message|None:
+    def json_to_message(self, received_data_str: str) -> Message:
         """
         Parses a JSON-encoded string into a Message object.
 
