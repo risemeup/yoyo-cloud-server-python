@@ -67,7 +67,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
 
     # 直接返回接收到消息
     async def receive(self, text_data):
-        logger.info('receive: {}'.format(text_data))
+        logger.info('receive: {}, type:{}'.format(text_data, type(text_data)))
         logger.info('000')
         try:
             mess = self.json_to_message(text_data)
