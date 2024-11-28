@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime
 from typing import List, Union
 from enum import Enum
+from dataclasses import dataclass, asdict
 logger = logging.getLogger('log')
 
 class Role(Enum):
@@ -35,6 +36,7 @@ class Option:
         self.id = id
         self.label = label
 
+@dataclass
 class Message:
     def __init__(self, role: str, type: str, id: str, timestamp: str, content: Union[TextContent, OptionContent]):
         self.role = role
@@ -83,7 +85,8 @@ class EchoConsumer(AsyncWebsocketConsumer):
         :return: 转换后的字符串
         """
         try:
-            message_str = self.message_to_json(message)
+            # message_str = self.message_to_json(message)
+            message_str = json.dumps(asdict(message))
             await self.send(text_data=message_str)
             logger.info('send: {}'.format(message_str))
         except Exception as e:
