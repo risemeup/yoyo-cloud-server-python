@@ -59,7 +59,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
             timestamp=get_cur_time_str(),
             content=TextContent("你好哇！我是你的旅行助手yoyo！请告诉我你想去哪旅行？"),
         )
-        await self.send_message1(mess)
+        await self.send_message(mess)
         logger.info('connect success!')
 
     async def disconnect(self, close_code):
@@ -67,60 +67,23 @@ class EchoConsumer(AsyncWebsocketConsumer):
 
     # 直接返回接收到消息
     async def receive(self, text_data):
-        logger.info('receive: {}, type:{}'.format(text_data, type(text_data)))
-        logger.info('000')
+        logger.info('receive: {}'.format(text_data))
         try:
             mess = self.json_to_message(text_data)
         except ValueError as e:
             logger.error(f"无法将接收到的数据转换为JSON格式: {e}")
             return
-        logger.info('111')
         mess.role = Role.SERVER.value
-        logger.info('222')
-        try:
-            logger.info('444')
-            await self.send_message1(mess)
-            # message = {
-            # "type": "text",
-            # "id": "123",
-            # "timestamp": "2024-11-20 12:12:12",
-            # "content": {
-            #     "text": "hello"
-            # }
-            # }
-            # await self.send(text_data=json.dumps(message))
-            logger.info('555')
-        except Exception as e:
-            logger.info('666')
-            logger.error(f"发生异常: {e}")
-        logger.info('333')
-        
-    
-    async def send_message1(self, message: Message):
+        await self.send_message(mess)
+
+    async def send_message(self, message: Message):
         """
         发送消息函数，将Message对象转换为字符串以便发送
         :param message: 要发送的Message对象
         :return: 转换后的字符串
         """
         try:
-            
-            msg = {
-                "role": "srever",
-                "type": "text",
-                "id": "123",
-                "timestamp": "2024-11-20 12:12:12",
-                "content": {
-                    "text": "hello"
-                }
-            }
-            logger.info('send_message1: {}'.format(msg))
-            await self.send(text_data=json.dumps(msg))
-            logger.info('aaa send_message1: {}'.format(msg))
-
-
-            logger.info('send_message: {}'.format(message))
             message_str = self.message_to_json(message)
-            logger.info('befor send: {}'.format(message_str))
             await self.send(text_data=message_str)
             logger.info('send: {}'.format(message_str))
         except Exception as e:
@@ -186,8 +149,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
             'id': message.id,
             'timestamp': message.timestamp,
         }
-        logger.info('aaa message_dict: {}'.format(message_dict))
-        
+
         content_dict = {}
         if isinstance(message.content, TextContent):
             content_dict['text'] = message.content.text
