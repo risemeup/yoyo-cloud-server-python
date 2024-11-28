@@ -91,6 +91,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         :return: 转换后的字符串
         """
         try:
+            logger.info('send_message: {}'.format(message))
             message_str = self.message_to_json(message)
             logger.info('befor send: {}'.format(message_str))
             await self.send(text_data=message_str)
