@@ -79,7 +79,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         logger.info('222')
         try:
             logger.info('444')
-            self.send_message(mess)
+            self.send_message1(mess)
             # message = {
             # "type": "text",
             # "id": "123",
@@ -96,14 +96,16 @@ class EchoConsumer(AsyncWebsocketConsumer):
         logger.info('333')
         
     
-    async def send_message(self, message: Message):
+    async def send_message1(self, message: Message):
         """
         发送消息函数，将Message对象转换为字符串以便发送
         :param message: 要发送的Message对象
         :return: 转换后的字符串
         """
         try:
+            
             msg = {
+                "role": "srever",
                 "type": "text",
                 "id": "123",
                 "timestamp": "2024-11-20 12:12:12",
@@ -111,7 +113,9 @@ class EchoConsumer(AsyncWebsocketConsumer):
                     "text": "hello"
                 }
             }
+            logger.info('send_message1: {}'.format(msg))
             await self.send(text_data=json.dumps(msg))
+            logger.info('aaa send_message1: {}'.format(msg))
 
 
             logger.info('send_message: {}'.format(message))
