@@ -80,6 +80,15 @@ class EchoConsumer(AsyncWebsocketConsumer):
         try:
             logger.info('444')
             self.send_message(mess)
+            message = {
+            "type": "text",
+            "id": "123",
+            "timestamp": "2024-11-20 12:12:12",
+            "content": {
+                "text": "hello"
+            }
+            }
+            await self.send(text_data=json.dumps(message))
             logger.info('555')
         except Exception as e:
             logger.info('666')
