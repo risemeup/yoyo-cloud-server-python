@@ -16,34 +16,29 @@ class MessType(Enum):
     TEXT = "text"
     OPTIONS = "options"
 
+@dataclass
 class TextContent:
-    def __init__(self, text: str):
-        self.text = text
+    text: str
 
+@dataclass
 class Option:
-    def __init__(self, id: str, label: str):
-        self.id = id
-        self.label = label
+    id: str
+    label: str
 
+@dataclass
 class OptionContent:
-    def __init__(self, text, options: List[Option], multiSelect: bool):
-        self.text = text
-        self.options = options
-        self.multiSelect = multiSelect
-
-class Option:
-    def __init__(self, id: str, label: str):
-        self.id = id
-        self.label = label
+    text : str
+    options: List[Option]
+    multiSelect: bool
 
 @dataclass
 class Message:
-    def __init__(self, role: str, type: str, id: str, timestamp: str, content: Union[TextContent, OptionContent]):
-        self.role = role
-        self.type = type
-        self.id = id
-        self.timestamp = timestamp
-        self.content = content
+    role: str
+    type: str
+    id: str
+    timestamp: str
+    content: Union[TextContent, OptionContent]
+
 
 def create_uuid() -> str:
     return str(uuid.uuid4())
@@ -71,7 +66,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         logger.info('receive: {}'.format(text_data))
         try:
-            mess = self.json_to_message(text_data)
+            mess = Message(**json.loads(text_data))
         except ValueError as e:
             logger.error(f"无法将接收到的数据转换为JSON格式: {e}")
             return
