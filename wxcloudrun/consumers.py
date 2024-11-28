@@ -59,7 +59,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
             timestamp=get_cur_time_str(),
             content=TextContent("你好哇！我是你的旅行助手yoyo！请告诉我你想去哪旅行？"),
         )
-        self.send_message(mess)
+        await self.send_message1(mess)
         logger.info('connect success!')
 
     async def disconnect(self, close_code):
@@ -79,7 +79,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         logger.info('222')
         try:
             logger.info('444')
-            self.send_message1(mess)
+            await self.send_message1(mess)
             # message = {
             # "type": "text",
             # "id": "123",
