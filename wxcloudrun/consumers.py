@@ -80,15 +80,15 @@ class EchoConsumer(AsyncWebsocketConsumer):
         try:
             logger.info('444')
             self.send_message(mess)
-            message = {
-            "type": "text",
-            "id": "123",
-            "timestamp": "2024-11-20 12:12:12",
-            "content": {
-                "text": "hello"
-            }
-            }
-            await self.send(text_data=json.dumps(message))
+            # message = {
+            # "type": "text",
+            # "id": "123",
+            # "timestamp": "2024-11-20 12:12:12",
+            # "content": {
+            #     "text": "hello"
+            # }
+            # }
+            # await self.send(text_data=json.dumps(message))
             logger.info('555')
         except Exception as e:
             logger.info('666')
@@ -103,6 +103,17 @@ class EchoConsumer(AsyncWebsocketConsumer):
         :return: 转换后的字符串
         """
         try:
+            msg = {
+                "type": "text",
+                "id": "123",
+                "timestamp": "2024-11-20 12:12:12",
+                "content": {
+                    "text": "hello"
+                }
+            }
+            await self.send(text_data=json.dumps(msg))
+
+
             logger.info('send_message: {}'.format(message))
             message_str = self.message_to_json(message)
             logger.info('befor send: {}'.format(message_str))
