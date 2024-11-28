@@ -78,8 +78,11 @@ class EchoConsumer(AsyncWebsocketConsumer):
         mess.role = Role.SERVER.value
         logger.info('222')
         try:
+            logger.info('444')
             self.send_message(mess)
+            logger.info('555')
         except Exception as e:
+            logger.info('666')
             logger.error(f"发生异常: {e}")
         logger.info('333')
         
