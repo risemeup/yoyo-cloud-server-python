@@ -22,7 +22,7 @@ class TextContent:
 
 @dataclass
 class Option:
-    id: str
+    value: str
     label: str
 
 @dataclass
@@ -54,7 +54,23 @@ class EchoConsumer(AsyncWebsocketConsumer):
             type=MessType.TEXT.value,
             id=create_uuid(),
             timestamp=get_cur_time_str(),
-            content=TextContent("你好哇！我是你的旅行助手yoyo！请告诉我你想去哪旅行？"),
+            content=TextContent("你好哇！我是你的旅行助手yoyo！"),
+        )
+        await self.send_message(mess)
+        mess = Message(
+            role=Role.SERVER.value,
+            type=MessType.OPTIONS.value,
+            id=create_uuid(),
+            timestamp=get_cur_time_str(),
+            content=OptionContent(
+                text= "你想去哪个城市旅行？",
+                options=[
+                    Option(value='1',label="北京"),
+                    Option(value='2',label="上海"),
+                    Option(value='3',label="广州"),
+                ],
+                multiSelect=True
+            ),
         )
         await self.send_message(mess)
         logger.info('connect success!')
