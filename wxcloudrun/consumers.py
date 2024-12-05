@@ -29,7 +29,9 @@ class Option:
 @dataclass
 class OptionContent:
     text : str
+    options: List[Option]
     multiSelect: bool
+
 
 @dataclass
 class Message:
@@ -65,9 +67,9 @@ class EchoConsumer(AsyncWebsocketConsumer):
             content=OptionContent(
                 text= "你想去哪个城市旅行？",
                 options=[
-                    Option(value='1',label="北京"),
-                    Option(value='2',label="上海"),
-                    Option(value='3',label="广州"),
+                    Option(value='1',label="北京", active=False),
+                    Option(value='2',label="上海", active=False),
+                    Option(value='3',label="广州", active=False),
                 ],
                 multiSelect=True
             ),
