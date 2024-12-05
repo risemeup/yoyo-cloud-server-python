@@ -24,11 +24,11 @@ class TextContent:
 class Option:
     value: str
     label: str
+    active: bool
 
 @dataclass
 class OptionContent:
     text : str
-    options: List[Option]
     multiSelect: bool
 
 @dataclass
