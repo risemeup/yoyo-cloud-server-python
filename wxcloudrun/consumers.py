@@ -32,6 +32,15 @@ class OptionContent:
     options: List[Option]
     multiSelect: bool
 
+@dataclass
+class CityContent:
+    province: str
+    city: str
+
+@dataclass
+class DateContent:
+    start: str
+    end: str
 
 @dataclass
 class Message:
@@ -39,7 +48,7 @@ class Message:
     type: str
     id: str
     timestamp: str
-    content: Union[TextContent, OptionContent]
+    content: Union[TextContent, OptionContent, CityContent, DateContent]
 
 
 def create_uuid() -> str:
@@ -59,28 +68,28 @@ class EchoConsumer(AsyncWebsocketConsumer):
             content=TextContent("你好哇！我是你的旅行助手yoyo！"),
         )
         await self.send_message(mess)
-        mess = Message(
-            role=Role.SERVER.value,
-            type=MessType.OPTIONS.value,
-            id=create_uuid(),
-            timestamp=get_cur_time_str(),
-            content=OptionContent(
-                text= "你想去哪个城市旅行？",
-                options=[
-                    Option(value='1',label="北京", active=False),
-                    Option(value='2',label="上海", active=False),
-                    Option(value='3',label="广州", active=False),
-                ],
-                multiSelect=True
-            ),
-        )
-        await self.send_message(mess)
+        # mess = Message(
+        #     role=Role.SERVER.value,
+        #     type=MessType.OPTIONS.value,
+        #     id=create_uuid(),
+        #     timestamp=get_cur_time_str(),
+        #     content=OptionContent(
+        #         text= "你想去哪个城市旅行？",
+        #         options=[
+        #             Option(value='1',label="北京", active=False),
+        #             Option(value='2',label="上海", active=False),
+        #             Option(value='3',label="广州", active=False),
+        #         ],
+        #         multiSelect=True
+        #     ),
+        # )
+        # await self.send_message(mess)
         logger.info('connect success!')
 
     async def disconnect(self, close_code):
         logger.info('disconnect!')
 
-    # 直接返回接收到消息
+    # 接收到消息
     async def receive(self, text_data):
         logger.info('receive: {}'.format(text_data))
         try:
@@ -88,8 +97,10 @@ class EchoConsumer(AsyncWebsocketConsumer):
         except ValueError as e:
             logger.error(f"无法将接收到的数据转换为JSON格式: {e}")
             return
-        mess.role = Role.SERVER.value
-        await self.send_message(mess)
+        # 仅文本消息返回
+        if mess.type == MessType.TEXT.value:
+            mess.role = Role.SERVER.value
+            await self.send_message(mess)
 
     async def send_message(self, message: Message):
         """
